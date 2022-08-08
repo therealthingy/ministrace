@@ -55,7 +55,8 @@ int do_tracee(int argc, char** argv,
     /* `kill`(2) sent from grandchild (= tracer) to child will wake us up   -> `wait`(2) & reap child  */
         /* we depend on SIGCHLD set to SIG_DFL by init code */
         /* if it happens to be SIG_IGN'ed, wait won't block */
-        while (wait(NULL) < 0 && EINTR == errno);
+        while (wait(NULL) < 0 && EINTR == errno)
+            ;
     }
 
 /* Execute actual program */
@@ -66,6 +67,7 @@ int do_tracee(int argc, char** argv,
 
 /* - Tracing - */
 int do_tracer(tracer_options_t* options) {
+/* 0a. Setup: Steps requiered for different "tracing modes" */
     if (options->daemonize) {
 		const pid_t pid = DIE_WHEN_ERRNO( fork() );
     /* parent */
@@ -109,16 +111,18 @@ int do_tracer(tracer_options_t* options) {
     }
     /* ELSE: tracee (= child) did `PTRACE_TRACEME`, hence, nothing to do in tracer (= parent)  */
 
-/* 0a. Setup: Wait until child stops  --> Either already stopped by previous `PTRACE_ATTACH` or by itself */
-    /* ELUCIDATION:
+
+/* 0b. Setup: Wait until child stops  --> Either already stopped by previous `PTRACE_ATTACH` or by itself */
+{   /* ELUCIDATION:
      *  - `WIFSTOPPED`: Returns nonzero value if child process is stopped
      */
     int tracee_status;
     do {
         DIE_WHEN_ERRNO( waitpid(tracee_pid, &tracee_status, 0) );
     } while (!WIFSTOPPED(tracee_status));
+}
 
-/* 0b. Setup: Set ptrace options */
+/* 0c. Setup: Set ptrace options */
     /* ELUCIDATION:
      *   - `PTRACE_O_TRACESYSGOOD`: Sets bit 7 in the signal number when delivering syscall traps
      *                              (i.e., deliver `SIGTRAP|0x80`) (see `PTRACE_TRAP_INDICATOR_BIT`)
@@ -263,7 +267,7 @@ static int set_bp_and_wait_for_trap(pid_t next_bp_tid, int *exit_status) {  /* N
          *                         suppressed by the tracer. If the tracer doesn't suppress the signal, it
          *                         passes the signal to the tracee in the next ptrace restart request.
          */
-        if (-1 != next_bp_tid) {        /* Wait only (i.e., don't set breakpoint; e.g., when prior trapped tracee terminated) */
+        if (-1 != next_bp_tid) {        /* `-1` = Wait only  (-> don't set breakpoint when prior trapped tracee terminated) */
             DIE_WHEN_ERRNO( ptrace(PTRACE_SYSCALL, next_bp_tid, 0, pending_signal) );
         }
 
