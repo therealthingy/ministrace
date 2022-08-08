@@ -69,25 +69,25 @@ int do_tracee(int argc, char** argv,
 int do_tracer(tracer_options_t* options) {
 /* 0a. Setup: Steps requiered for different "tracing modes" */
     if (options->daemonize) {
-		const pid_t pid = DIE_WHEN_ERRNO( fork() );
+        const pid_t pid = DIE_WHEN_ERRNO( fork() );
     /* parent */
-		if (pid) {
-			/*
-			 * Wait for grandchild to attach to straced process
-			 * (grandparent). Grandchild SIGKILLs us after it attached.
-			 * Grandparent's wait() is unblocked by our death,
-			 * it proceeds to exec the straced program.
-			 */
-			pause();
-			_exit(0); /* paranoia */
-		}
+        if (pid) {
+            /*
+             * Wait for grandchild to attach to straced process
+             * (grandparent). Grandchild SIGKILLs us after it attached.
+             * Grandparent's wait() is unblocked by our death,
+             * it proceeds to exec the straced program.
+             */
+            pause();
+            _exit(0); /* paranoia */
+        }
 
     /* grandchild   (will be tracer) */
         /*
-		 * Make parent go away.
-		 * Also makes grandparent's wait() unblock.
-		 */
-		kill(getppid(), SIGKILL);
+         * Make parent go away.
+         * Also makes grandparent's wait() unblock.
+         */
+        kill(getppid(), SIGKILL);
     }
 
     /* Disable IO buffering for accurate output */
