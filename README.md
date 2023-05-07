@@ -23,7 +23,7 @@ detail how it works.
   * stack unwinding
 
 ### 1.2. TODOs / Known issues
-* See [main.c](src/main.c)
+* See [`src/main.c`](src/main.c)
 
 
 ## 2. Build
