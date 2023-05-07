@@ -3,7 +3,7 @@
 #include <sys/ptrace.h>
 #include <sys/uio.h>
 
-#include "../../../common/error.h"
+#include <common/error.h>
 #include "../ptrace_utils.h"
 #include "ptrace_utils.h"
 
@@ -22,7 +22,7 @@ int ptrace_get_regs_content(pid_t tid, struct user_regs_struct_full *regs) {
     ptrace(PTRACE_GETREGSET, tid, NT_PRSTATUS, &iov);
     if (errno) {
         if (ESRCH == errno) { return -1; }
-        LOG_ERROR_AND_EXIT("Reading registers failed -- %s", strerror(errno));
+        LOG_ERROR_AND_DIE("Reading registers failed -- %s", strerror(errno));
     }
 
     return 0;
@@ -43,7 +43,7 @@ int ptrace_get_regs_content(pid_t tid, struct user_regs_struct_full *regs) {
 //   ptrace(PTRACE_GETREGSET, tid, NT_PRSTATUS, &iov);
 //   if (errno) {
 //     if (ESRCH == errno) { return -1; }
-//     LOG_ERROR_AND_EXIT("Reading registers failed -- %s", strerror(errno));
+//     LOG_ERROR_AND_DIE("Reading registers failed -- %s", strerror(errno));
 //   }
 //
 //   /* 2. Get syscall-nr */
@@ -52,7 +52,7 @@ int ptrace_get_regs_content(pid_t tid, struct user_regs_struct_full *regs) {
 //   ptrace(PTRACE_GETREGSET, tid, NT_ARM_SYSTEM_CALL, &iov);        // !!! TODO: Returns wrong syscall nr ?? !!!
 //   if (errno) {
 //     if (ESRCH == errno) { return -1; }
-//     LOG_ERROR_AND_EXIT("Reading registers failed -- %s", strerror(errno));
+//     LOG_ERROR_AND_DIE("Reading registers failed -- %s", strerror(errno));
 //   }
 //
 //   return 0;

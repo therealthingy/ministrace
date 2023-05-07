@@ -39,9 +39,9 @@ detail how it works.
 
 
 ### 2.3. Out-of-source build
-1. `mkdir build && cd build`
+1. `mkdir build  &&  cd build`
 2. `ccmake -DCMAKE_BUILD_TYPE=Release ..` &rarr; press `c` &rarr; set `LINUX_SRC_DIR` (to downloaded Linux kernel sources) &rarr; press `c` &rarr; press `g`
-3. `cmake --build .`
+3. `cmake --build . -- -j`
     * Executable will be in `build/src`
 
 

@@ -1,7 +1,7 @@
 #include <errno.h>
 #include <stdlib.h>
 
-#include "string_utils.h"
+#include "str_utils.h"
 
 
 int str_to_long(char* str, long* num) {

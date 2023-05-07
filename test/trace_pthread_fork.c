@@ -20,7 +20,7 @@
 
 #include <stdbool.h>
 
-#include "../src/common/error.h"
+#include <common/error.h>
 
 
 
@@ -203,7 +203,7 @@ void register_sig_handlers(void(*sig_handler_func_ptr)(int)) {
             sigaction(SIGUSR1, &sa, NULL) == -1 ||
             sigaction(SIGUSR2, &sa, NULL) == -1
             ) {
-        LOG_ERROR_AND_EXIT("Couldn't register signal handler");
+        LOG_ERROR_AND_DIE("Couldn't register signal handler");
     }
 }
 
@@ -280,7 +280,7 @@ int main(int argc, char** argv) {
         pthread_routine_arg->sig_handler_func_ptr = &child_signal_handler;
 
         if (0 != pthread_create(&t1, NULL, routine_pthread_wrapper, pthread_routine_arg) ) {      // NOTE: Child-thread will overwrite parent's signal handler ??
-            LOG_ERROR_AND_EXIT("Couldn't create additional thread!");
+            LOG_ERROR_AND_DIE("Couldn't create additional thread!");
         }
 }
 

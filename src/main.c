@@ -20,7 +20,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "common/error.h"
+#include <common/error.h>
 #include "cli.h"
 #include "trace/tracing.h"
 #include "trace/internal/syscalls.h"

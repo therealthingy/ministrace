@@ -5,9 +5,10 @@
 #include <unistd.h>
 #include <time.h>
 #include <sys/wait.h>
-#include "../src/common/error.h"
-
 #include <stdlib.h>
+
+#include <common/error.h>
+
 
 #define MAX_CHILDREN 10
 

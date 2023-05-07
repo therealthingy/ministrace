@@ -6,8 +6,8 @@
 #include <errno.h>
 
 #include "cli.h"
-#include "common/error.h"
-#include "common/string_utils.h"
+#include <common/error.h>
+#include <common/str_utils.h>
 #include "trace/internal/syscalls.h"
 
 

@@ -16,7 +16,7 @@
 #include "unwind.h"
 
 #include <assert.h>
-#include "../../common/error.h"
+#include <common/error.h>
 
 
 /* -- Macros / Globals  -- */
@@ -37,7 +37,7 @@ void unwind_init(void) {
      *      - specified byteorder (`0` = default byte-order of unwind target)
      */
     if (! (unw_as = unw_create_addr_space(&_UPT_accessors, 0)) ) {
-        LOG_ERROR_AND_EXIT("libunwind -- failed to create address space for stack unwinding");
+        LOG_ERROR_AND_DIE("libunwind -- failed to create address space for stack unwinding");
     }
 
     /* ELUCIDATION:
@@ -68,7 +68,7 @@ void unwind_print_backtrace_of_proc(pid_t tid) {
      */
     unw_cursor_t cursor;
     if (0 > unw_init_remote(&cursor, unw_as, unw_ctx)) {
-        LOG_ERROR_AND_EXIT("libunwind -- failed to init context");
+        LOG_ERROR_AND_DIE("libunwind -- failed to init context");
     }
 
     /* 0.2. libdw */
@@ -90,7 +90,7 @@ void unwind_print_backtrace_of_proc(pid_t tid) {
          */
         unw_word_t ip = 0;
         if (0 > unw_get_reg(&cursor, UNW_REG_IP, &ip)) {
-            LOG_ERROR_AND_EXIT("libunwind -- failed to walk the stack of process %d", tid);
+            LOG_ERROR_AND_DIE("libunwind -- failed to walk the stack of process %d", tid);
         }
 
     /* 1.2. Get + Print so filename */
@@ -156,5 +156,5 @@ static Dwfl* init_ldw_for_proc(pid_t tid) {
     }
 
     dwfl_end(dwfl);
-    LOG_ERROR_AND_EXIT("libdw -- failed to init for process %d", tid);
+    LOG_ERROR_AND_DIE("libdw -- failed to init for process %d", tid);
 }

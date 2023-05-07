@@ -15,7 +15,7 @@
 #  include "internal/unwind.h"
 #endif
 
-#include "../common/error.h"
+#include <common/error.h>
 
 
 /* -- Consts -- */
@@ -61,7 +61,7 @@ int do_tracee(int argc, char** argv,
 
 /* Execute actual program */
     return execvp(tracee_exec_argv[0], tracee_exec_argv);
-    LOG_ERROR_AND_EXIT("Exec'ing \"%s\" failed -- %s", tracee_exec_argv[0], strerror(errno));
+    LOG_ERROR_AND_DIE("Exec'ing \"%s\" failed -- %s", tracee_exec_argv[0], strerror(errno));
 }
 
 
@@ -93,7 +93,7 @@ int do_tracer(tracer_options_t* options) {
     /* Disable IO buffering for accurate output */
     if (0 != setvbuf(stdout, NULL, _IONBF, 0) ||
         0 != setvbuf(stderr, NULL, _IONBF, 0)) {
-        LOG_ERROR_AND_EXIT("Couldn't set buffering options for std-io");
+        LOG_ERROR_AND_DIE("Couldn't set buffering options for std-io");
     }
 
 

@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include <sys/types.h>
 
-#include "generated/syscallents.h"
+#include <trace/syscallents.h>
 
 
 /* -- Types -- */

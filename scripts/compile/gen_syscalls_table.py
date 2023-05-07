@@ -40,7 +40,7 @@ LINUX_SRC_PARSING_ARCH_SPECIFIC = {
 
 
 # - Existing src -
-GENERATED_HEADER_INCLUDE_TYPES_HEADER = "trace/internal/syscall_types.h"
+GENERATED_HEADER_INCLUDE_TYPES_HEADER = "trace/syscall_types.h"
 
 class GENERATED_HEADER_STRUCT_ARG_TYPE_ENUM:
     INT = "ARG_INT"
@@ -185,7 +185,7 @@ def generate_src_files(kernel_version: str, cpu_arch: str,
         print(generated_file_disclaimer, file=out_header)
         print("#ifndef {0}\n#define {0}\n".format(header_guard_name), file=out_header)
 
-        print(f"#include \"{GENERATED_HEADER_INCLUDE_TYPES_HEADER}\"\n", file=out_header)
+        print(f"#include <{GENERATED_HEADER_INCLUDE_TYPES_HEADER}>\n", file=out_header)
 
         print(f"#define TOTAL_NUM_SYSCALLS      {len(syscalls_parsed_from_tbl.keys())}", file=out_header)
         print(f"#define MAX_SYSCALL_NUM         {max(syscalls_parsed_from_tbl.keys())}", file=out_header)

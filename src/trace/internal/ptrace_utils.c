@@ -6,7 +6,7 @@
 
 #include "ptrace_utils.h"
 
-#include "../../common/error.h"
+#include <common/error.h>
 
 /* -- Consts -- */
 #ifndef PRINT_COMPLETE_STRING_ARGS
@@ -29,7 +29,7 @@ size_t ptrace_read_string(pid_t tid, unsigned long addr,
 
     char *read_str_ptr = NULL;
     if (! (read_str_ptr = malloc(read_str_size_bytes)) ) {
-        LOG_ERROR_AND_EXIT("`malloc`: Failed to allocate memory");
+        LOG_ERROR_AND_DIE("`malloc`: Failed to allocate memory");
     }
     *read_str_ptr_ptr = read_str_ptr;
 
@@ -41,7 +41,7 @@ size_t ptrace_read_string(pid_t tid, unsigned long addr,
 #ifdef PRINT_COMPLETE_STRING_ARGS
             read_str_size_bytes *= 2;
             if (! (read_str_ptr = realloc(read_str_ptr, read_str_size_bytes)) ) {
-                LOG_ERROR_AND_EXIT("`realloc`: Failed to allocate memory");
+                LOG_ERROR_AND_DIE("`realloc`: Failed to allocate memory");
             }
             *read_str_ptr_ptr = read_str_ptr;
 #else

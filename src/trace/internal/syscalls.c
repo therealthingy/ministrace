@@ -4,10 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../common/error.h"
-#include "generated/syscallents.h"
+#include <common/error.h>
+#include <trace/syscallents.h>
 #include "ptrace_utils.h"
-#include "syscall_types.h"
+#include <trace/syscall_types.h>
 #include "syscalls.h"
 
 
